@@ -1,0 +1,67 @@
+{% extends 'home/base.html'%}
+
+
+{%block content%}
+<Form action="" method="post">
+  {% csrf_token %}
+  <div class="col-md-6">
+      <div class="billing-details">
+
+          <div class="section-title">
+              <h4 class="title">Детали</h4>
+          </div>
+          <p><label for="id_first_name">First name:</label>
+              <input type="text" name="first_name"  value="{{ user.first_name }}" class="input" maxlength="10" required id="id_first_name"></p>
+          <p><label for="id_last_name">Last name:</label>
+              <input type="text" name="last_name"  value="{{ user.last_name }}" class="input" maxlength="10" required id="id_last_name"></p>
+          <p><label for="id_tab_number">Табельный номер:</label>
+              <input type="text" name="tab_number" value="{{ profile.tab_number }}" class="input" maxlength="150" id="id_tab_number"></p>
+          <p><label for="id_phone">Телефон:</label>
+              <input type="text" name="phone"  value="{{ profile.phone }}"  class="input" maxlength="20" id="id_phone"></p>
+          <div class="pull-right">
+              <button  type="submit" class="primary-btn">Complete Order</button>
+          </div>
+      </div>
+  </div>
+
+</Form>
+{%if shopcart%}
+<table class="table">
+    <thead>
+      <tr>
+        <th scope="col">Наименование</th>
+        <th scope="col">Изображение</th>
+        <th scope="col">Цена</th>
+        <th scope="col">Кол-во</th>
+        <th scope="col">Общая цена</th>
+      </tr>
+    </thead>
+    <tbody>
+       {%for rs in shopcart%}
+        <tr>
+          <th scope="row">{{ rs.product.title }}</th>
+          <td class=""><img width=200px src="{{ rs.product.image.url }}" class="img-fluid"></td>
+          <td>{{ rs.price }} руб.</td>
+          <td>{{ rs.quantity }} шт.</td>
+          <td>{{ rs.amount }} руб.</td>
+        </tr>
+    </tbody>
+    {%endfor%}
+    <tr>
+      <td colspan="2"></td>
+      <td>Итого: </td>
+      <td></td>
+      <td><strong>{{total}} руб.</strong></td>
+    </tr>
+  </table>
+
+{%endif%}
+
+
+
+
+
+
+
+
+{%endblock%}

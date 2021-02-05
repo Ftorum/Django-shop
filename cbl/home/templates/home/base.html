@@ -1,0 +1,115 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+  <meta name="description" content="">
+  <meta name="author" content="">
+
+  <title>Столовая</title>
+  {% load static %}
+  <!-- Bootstrap core CSS -->
+  <link rel="stylesheet" href="{% static 'home/css/bootstrap.min.css' %}">
+
+  <!-- Custom styles for this template -->
+  <link rel="stylesheet" href="{% static 'home/css/shop-homepage.css' %}" >
+
+</head>
+
+<body>
+
+  <!-- Navigation -->
+  <nav class="navbar navbar-expand-lg navbar-dark bg-dark fixed-top mb-10">
+    <div class="container">
+      <a class="navbar-brand" href="{%url 'home'%}">Столовая ПАО "Сургутнефтегаз"</a>
+      <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarResponsive" aria-controls="navbarResponsive" aria-expanded="false" aria-label="Toggle navigation">
+        <span class="navbar-toggler-icon"></span>
+      </button>
+      <div class="collapse navbar-collapse" id="navbarResponsive">
+        <ul class="navbar-nav ml-auto">
+          <li class="nav-item active">
+            <a class="nav-link" href="{%url 'home'%}">Главная
+              <span class="sr-only">(current)</span>
+            </a>
+          </li>
+          {%if not user.is_authenticated%}
+          <li class="nav-item">
+            <a class="nav-link" href="/login">Войти</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" href="/signup">Зарегистрироваться</a>
+          </li>
+          {%endif%}
+          {%if user.is_authenticated%}
+          <li class="nav-item">
+            <a class="nav-link" href="/logout">Выйти</a>
+          </li>
+          {%endif%}
+          <ul class="navbar-nav ml-auto">
+            <li class="nav-item">
+              <a class="nav-link" href="{%url 'shopcart'%}">Корзина <span class="badge badge-pill badge-danger"></span></a>
+            </li>
+        </ul>
+      </div>
+    </div>
+  </nav>
+
+  <!-- Page Content -->
+  <div class="container">
+
+    <div class="row mt-2">
+
+      <div class="col-lg-3 mt-4">
+
+        <h1>Столовая</h1>
+        {% load mptt_tags %}
+        <div class="list-group mb-2">
+              {% recursetree category %}
+                          <a href="/category/{{ node.id }}/{{ node.slug }}" class="list-group-item children">{{ node.title }}</a>
+                          {% if not node.is_leaf_node %}
+                          {{ children }}
+                      {% endif %}
+              {% endrecursetree %}
+        </div>
+      </div>
+      <!-- /.col-lg-3 -->
+
+      <div class="col-lg-9">
+        <div class="mt-2">
+              {% if messages %}
+             {% for message in messages %}
+                  <div class="alert alert-{{message.tags}}" role="alert">
+                   {{ message }}
+                </div>
+              {% endfor %}
+            {% endif %}
+            </div>
+        {%block content%}
+        {%endblock%}
+       
+      </div>
+      <!-- /.col-lg-9 -->
+
+    </div>
+    <!-- /.row -->
+
+  </div>
+  <!-- /.container -->
+
+  <!-- Footer -->
+  <footer class="py-5 bg-dark">
+    <div class="container mt-2">
+      <p class="m-0 text-center text-white">No_Copyright &copy; text Popkov Anton to get it</p>
+    </div>
+    <!-- /.container -->
+  </footer>
+
+  <!-- Bootstrap core JavaScript -->
+  <script src="{% static 'home/js/jquery.min.js' %}"></script>
+  <script src="{% static 'home/js/bootstrap.bundle.min.js' %}"></script>
+
+</body>
+
+</html>
